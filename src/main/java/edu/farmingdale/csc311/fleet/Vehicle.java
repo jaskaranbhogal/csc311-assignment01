@@ -4,7 +4,7 @@ package edu.farmingdale.csc311.fleet;
  * Base class for everything the motor pool owns. Abstract on purpose:
  * the fleet holds cars and trucks, never a plain "vehicle".
  *
- * @author YOUR NAME HERE
+ * @author Jaskaran Bhogal
  */
 public abstract class Vehicle implements Honkable {
 
@@ -44,9 +44,69 @@ public abstract class Vehicle implements Honkable {
      * a private static helper and call it three times.
      * ------------------------------------------------------------------ */
 
+    private final String vin;
+    private final String make;
+    private final String model;
+    private int year;
+    private String color;
+    private int wheels;
+    private final double engineSize;
+    private final FuelType fuelType;
+    private double fuelCapacity;
+
     protected Vehicle(String vin, String make, String model, int year, String color,
                       int wheels, double engineSize, FuelType fuelType, double fuelCapacity) {
-        throw new UnsupportedOperationException("TODO-02");
+
+        if (vin == null || vin.trim().length() != 17) {
+            throw new IllegalArgumentException("vin: " + vin);
+        }
+
+        String checkedVin = vin.trim().toUpperCase();
+        String checkedMake = requireText("make", make);
+        String checkedModel = requireText("model", model);
+        String checkedColor = requireText("color", color);
+
+        if (year < 1900 || year > 2100) {
+            throw new IllegalArgumentException("year: " + year);
+        }
+
+        if (wheels < 2 || wheels > 18) {
+            throw new IllegalArgumentException("wheels: " + wheels);
+        }
+
+        if (fuelType == null) {
+            throw new IllegalArgumentException("fuelType: " + fuelType);
+        }
+
+        if (fuelType.hasEngine()) {
+            if (engineSize <= 0.0 || engineSize > 8.5) {
+                throw new IllegalArgumentException("engineSize: " + engineSize);
+            }
+        } else if (engineSize != 0.0) {
+            throw new IllegalArgumentException("engineSize: " + engineSize);
+        }
+
+        if (fuelCapacity <= 0.0) {
+            throw new IllegalArgumentException("fuelCapacity: " + fuelCapacity);
+        }
+
+        this.vin = checkedVin;
+        this.make = checkedMake;
+        this.model = checkedModel;
+        this.year = year;
+        this.color = checkedColor;
+        this.wheels = wheels;
+        this.engineSize = engineSize;
+        this.fuelType = fuelType;
+        this.fuelCapacity = fuelCapacity;
+    }
+
+    private static String requireText(String field, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(field + ": " + value);
+        }
+
+        return value.trim();
     }
 
     /* ------------------------------------------------------------------
