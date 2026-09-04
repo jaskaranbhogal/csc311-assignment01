@@ -64,15 +64,6 @@ public abstract class Vehicle implements Honkable {
         String checkedVin = vin.trim().toUpperCase();
         String checkedMake = requireText("make", make);
         String checkedModel = requireText("model", model);
-        String checkedColor = requireText("color", color);
-
-        if (year < 1900 || year > 2100) {
-            throw new IllegalArgumentException("year: " + year);
-        }
-
-        if (wheels < 2 || wheels > 18) {
-            throw new IllegalArgumentException("wheels: " + wheels);
-        }
 
         if (fuelType == null) {
             throw new IllegalArgumentException("fuelType: " + fuelType);
@@ -86,19 +77,16 @@ public abstract class Vehicle implements Honkable {
             throw new IllegalArgumentException("engineSize: " + engineSize);
         }
 
-        if (fuelCapacity <= 0.0) {
-            throw new IllegalArgumentException("fuelCapacity: " + fuelCapacity);
-        }
-
         this.vin = checkedVin;
         this.make = checkedMake;
         this.model = checkedModel;
-        this.year = year;
-        this.color = checkedColor;
-        this.wheels = wheels;
         this.engineSize = engineSize;
         this.fuelType = fuelType;
-        this.fuelCapacity = fuelCapacity;
+
+        setYear(year);
+        setColor(color);
+        setWheels(wheels);
+        setFuelCapacity(fuelCapacity);
     }
 
     private static String requireText(String field, String value) {
@@ -118,55 +106,67 @@ public abstract class Vehicle implements Honkable {
      * ------------------------------------------------------------------ */
 
     public String getVin() {
-        throw new UnsupportedOperationException("TODO-03");
+        return vin;
     }
 
     public String getMake() {
-        throw new UnsupportedOperationException("TODO-03");
+        return make;
     }
 
     public String getModel() {
-        throw new UnsupportedOperationException("TODO-03");
+        return model;
     }
 
     public int getYear() {
-        throw new UnsupportedOperationException("TODO-03");
+        return year;
     }
 
     public void setYear(int year) {
-        throw new UnsupportedOperationException("TODO-03");
+        if (year < 1900 || year > 2100) {
+            throw new IllegalArgumentException("year: " + year);
+        }
+
+        this.year = year;
     }
 
     public String getColor() {
-        throw new UnsupportedOperationException("TODO-03");
+        return color;
     }
 
     public void setColor(String color) {
-        throw new UnsupportedOperationException("TODO-03");
+        this.color = requireText("color", color);
     }
 
     public int getWheels() {
-        throw new UnsupportedOperationException("TODO-03");
+        return wheels;
     }
 
     public void setWheels(int wheels) {
-        throw new UnsupportedOperationException("TODO-03");
+        if (wheels < 2 || wheels > 18) {
+            throw new IllegalArgumentException("wheels: " + wheels);
+        }
+
+        this.wheels = wheels;
     }
 
     public double getEngineSize() {
-        throw new UnsupportedOperationException("TODO-03");
+        return engineSize;
     }
 
     public FuelType getFuelType() {
-        throw new UnsupportedOperationException("TODO-03");
+        return fuelType;
     }
 
     public double getFuelCapacity() {
-        throw new UnsupportedOperationException("TODO-03");
+        return fuelCapacity;
     }
 
     public void setFuelCapacity(double fuelCapacity) {
-        throw new UnsupportedOperationException("TODO-03");
+        if (fuelCapacity <= 0.0) {
+            throw new IllegalArgumentException("fuelCapacity: " + fuelCapacity);
+        }
+
+        this.fuelCapacity = fuelCapacity;
     }
 
     /* ------------------------------------------------------------------
