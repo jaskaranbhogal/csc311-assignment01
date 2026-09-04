@@ -3,9 +3,11 @@ package edu.farmingdale.csc311.fleet;
 /**
  * A passenger car: a Vehicle plus a door count.
  *
- * @author YOUR NAME HERE
+ * @author Jaskaran Bhogal
  */
 public class Car extends Vehicle {
+
+    private int doors;
 
     /* ------------------------------------------------------------------
      * TODO-06     commit: TODO-06: implement Car
@@ -31,34 +33,39 @@ public class Car extends Vehicle {
 
         super(vin, make, model, year, color, wheels, engineSize, fuelType, fuelCapacity);
 
-        // TODO-06 step 2: check and store doors here.
+        setDoors(doors);
     }
 
     public int getDoors() {
-        throw new UnsupportedOperationException("TODO-06");
+        return doors;
     }
 
     public void setDoors(int doors) {
-        throw new UnsupportedOperationException("TODO-06");
+        if (doors < 2 || doors > 5) {
+            throw new IllegalArgumentException("doors: " + doors);
+        }
+
+        this.doors = doors;
     }
 
     @Override
     public String category() {
-        throw new UnsupportedOperationException("TODO-06");
+        return "Car";
     }
 
     @Override
     public double rangeInMiles() {
-        throw new UnsupportedOperationException("TODO-06");
+        return getFuelCapacity() * getFuelType().getMilesPerUnit();
     }
 
     @Override
     public String hornSound() {
-        throw new UnsupportedOperationException("TODO-06");
+        return "Beep beep!";
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("TODO-06");
+        return String.format("%s -> %s, doors=%d, range=%.1f mi",
+                category(), super.toString(), doors, rangeInMiles());
     }
 }
