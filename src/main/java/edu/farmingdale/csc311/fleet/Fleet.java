@@ -174,18 +174,74 @@ public class Fleet {
      * ------------------------------------------------------------------ */
 
     public Vehicle[] sortedByYear() {
-        throw new UnsupportedOperationException("TODO-09");
+        Vehicle[] sorted = toArray();
+
+        for (int i = 0; i < sorted.length - 1; i++) {
+            int smallestIndex = i;
+
+            for (int j = i + 1; j < sorted.length; j++) {
+                boolean earlierYear = sorted[j].getYear() < sorted[smallestIndex].getYear();
+                boolean sameYearEarlierMake =
+                        sorted[j].getYear() == sorted[smallestIndex].getYear()
+                                && sorted[j].getMake().compareToIgnoreCase(
+                                        sorted[smallestIndex].getMake()) < 0;
+
+                if (earlierYear || sameYearEarlierMake) {
+                    smallestIndex = j;
+                }
+            }
+
+            Vehicle temp = sorted[i];
+            sorted[i] = sorted[smallestIndex];
+            sorted[smallestIndex] = temp;
+        }
+
+        return sorted;
     }
 
     public int countWithFuelType(FuelType fuel) {
-        throw new UnsupportedOperationException("TODO-09");
+        int total = 0;
+
+        for (int i = 0; i < count; i++) {
+            if (vehicles[i].getFuelType() == fuel) {
+                total++;
+            }
+        }
+
+        return total;
     }
 
     public double averageEngineSize() {
-        throw new UnsupportedOperationException("TODO-09");
+        double totalEngineSize = 0.0;
+        int engineCount = 0;
+
+        for (int i = 0; i < count; i++) {
+            if (vehicles[i].getFuelType().hasEngine()) {
+                totalEngineSize += vehicles[i].getEngineSize();
+                engineCount++;
+            }
+        }
+
+        if (engineCount == 0) {
+            return 0.0;
+        }
+
+        return totalEngineSize / engineCount;
     }
 
     public Vehicle longestRange() {
-        throw new UnsupportedOperationException("TODO-09");
+        if (count == 0) {
+            return null;
+        }
+
+        Vehicle longest = vehicles[0];
+
+        for (int i = 1; i < count; i++) {
+            if (vehicles[i].rangeInMiles() > longest.rangeInMiles()) {
+                longest = vehicles[i];
+            }
+        }
+
+        return longest;
     }
 }
